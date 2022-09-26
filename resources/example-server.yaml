@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-server
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: example-server
+  template:
+    metadata:
+      labels:
+        app: example-server
+    spec:
+      containers:
+        - image: quay.io/danisoi/example-server:0.0.1
+          name: example-server
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+          resources:
+            limits:
+              memory: 100Mi
+            requests:
+              memory: 30Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-server-svc
+spec:
+  selector:
+    app: example-server
+  ports:
+    - name: http
+      targetPort: http
+      protocol: TCP
+      port: 80
