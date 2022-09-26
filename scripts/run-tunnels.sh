@@ -2,7 +2,7 @@
 
 function start_batch() {
     bash ./create-tunnel-clients.sh \
-          --kube-context k3d-stress1 \
+          --kube-context k3d-stress3 \
           --namespace default \
           --tunnel-server-addr register-tunnels-20.dev.codefresh.io \
           --tunnel-server-port 443 \
@@ -12,14 +12,14 @@ function start_batch() {
           --client-stop $2
 }
 
-start_batch 0 4
+#start_batch 0 4
 
 
-#for i in {0..1} ; do
-#    start=$(( i * 100 ))
-#    stop=$(( start + 100 ))
-#
-#    start_batch $start $stop
-#    sleep 60
-#    echo "Clients deployed: $stop"
-#done
+for i in {4..5} ; do
+    start=$(( i * 100 ))
+    stop=$(( start + 100 ))
+
+    start_batch $start $stop
+    sleep 60
+    echo "Clients deployed: $stop"
+done
