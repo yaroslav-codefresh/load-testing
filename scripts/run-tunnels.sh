@@ -2,7 +2,7 @@
 
 function start_batch() {
     bash ./create-tunnel-clients.sh \
-          --kube-context k3d-stress3 \
+          --kube-context k3d-stress1 \
           --namespace default \
           --tunnel-server-addr register-tunnels-20.dev.codefresh.io \
           --tunnel-server-port 443 \

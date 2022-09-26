@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-kubectl config use-context k3d-stress3
+kubectl config use-context k3d-stress1
 #kubectl config use-context yaroslav
 # 110 per node
 
 echo "" > clients.csv
 
-kubectl -n clients delete po -l app=frpc
-kubectl -n clients delete cm -l app=frpc
+kubectl -n default delete po -l app=frpc
+kubectl -n default delete cm -l app=frpc
 
 
 #export K3D_FIX_DNS=1 && k3d cluster create stress \
