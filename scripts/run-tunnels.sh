@@ -2,9 +2,9 @@
 
 function start_batch() {
     bash ./create-tunnel-clients.sh \
-          --kube-context k3d-stress3 \
+          --kube-context k3d-stress4 \
           --namespace default \
-          --tunnel-server-addr register-tunnels-20.dev.codefresh.io \
+          --tunnel-server-addr register-tunnels-10.dev.codefresh.io \
           --tunnel-server-port 443 \
           --target-addr example-server-svc \
           --target-port 80 \
@@ -15,7 +15,7 @@ function start_batch() {
 #start_batch 0 4
 
 
-for i in {4..5} ; do
+for i in {0..1} ; do
     start=$(( i * 100 ))
     stop=$(( start + 100 ))
 
