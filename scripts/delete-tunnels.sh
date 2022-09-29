@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-kubectl config use-context k3d-stress1
+kubectl config use-context k3d-stress4
 #kubectl config use-context yaroslav
 # 110 per node
 

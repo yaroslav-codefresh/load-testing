@@ -74,12 +74,12 @@ export default function () {
         'Content-Type': 'application/json',
     };
 
-    const url = `${tunnelToUse}/${name}`
+    const url = `${tunnelToUse}`
     debug(`sending request to ${url}`)
 
-    const response = http.post(url, JSON.stringify({ query: graphqlQuery }), {
+    const response = http.get(url/*, JSON.stringify({ query: graphqlQuery }), {
         headers: headers,
-    });
+    }*/);
 
     check(response, {
         'status is 200': (r) => r.status === 200

@@ -4,7 +4,7 @@ function start_batch() {
     bash ./create-tunnel-clients.sh \
           --kube-context k3d-stress4 \
           --namespace default \
-          --tunnel-server-addr register-tunnels-10.dev.codefresh.io \
+          --tunnel-server-addr register-tunnels-20.dev.codefresh.io \
           --tunnel-server-port 443 \
           --target-addr example-server-svc \
           --target-port 80 \

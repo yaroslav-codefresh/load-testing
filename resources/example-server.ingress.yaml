@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-server
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            backend:
+              service:
+                name: example-server-svc
+                port:
+                  number: 80
+            pathType: Prefix
+      host: local.codefresh.io

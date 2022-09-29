@@ -3,9 +3,12 @@
 
 ##### 1 user is 1 req/sec
 
-### Comments
+### Summary
 
-1) One server normally
+1) Difference between ingress and ingress-less is pretty small (from 2 ms to 100 ms)
+2) Response time on ingress-less has a bit higher difference between min and max values then ingress 
+(mostly because sometimes opening work connections can take more time)
+3) 
 
 ## Ingress vs Ingress-less
 
