@@ -3,7 +3,7 @@
 
 ### Summary
 
-1) Difference between ingress and ingress-less is pretty small (from 2 ms to 100 ms)
+1) Difference between ingress and ingress-less is pretty small (from 2 ms to 140 ms)
 2) Response time on ingress-less has a bit higher difference between min and max values then ingress 
 (mostly because sometimes opening  connections can take more time)
 3) Amount of passive (when no requests sent) tunnels does not influence on server performance (cpu and memory 
@@ -36,7 +36,7 @@ both ingress and ingress-less had less or equal response time).
 
 Average response time differs and on ingress-less it grows faster when load is being increased.
 
-#### 10 users:
+### 10 users:
 
 ```
 ingress:
@@ -46,7 +46,7 @@ ingress-less:
 ```
 
 
-#### 100 users:
+### 100 users:
 
 ```
 ingress:
@@ -56,7 +56,7 @@ ingress-less:
 ```
 
 
-#### 1000 users:
+### 1000 users:
 
 ```
 ingress:
@@ -71,12 +71,10 @@ Prerequisites:
 1) one frp server instance on gcp cluster (?which resources)
 2) 3000 tunnels run on local machine (all connected to server)
 
-Though it does not seem to be the cpu bottleneck on the server side (it never grows higher than 3-4%)
+Though it does not seem to be the cpu bottleneck on the server side (it never grows higher than 3-4%).
+We expect that the bottleneck was either network on cluster or on local machine (where clients were run).
 
-##### Note: we expect that the bottleneck was either network on cluster or on local machine (where clients were run)
-
-
-#### 3000 tunnels -- sending requests to all of them
+### 3000 tunnels -- sending requests to all of them
 
 These measurements show how server acts when having 3000 tunnels connected and sending different amount of req/sec.
 
@@ -100,7 +98,7 @@ As you can see until the load crosses the threshold of 500 threads the average r
 ```
 
 
-#### 3000 tunnels + requests to different amount of them
+### 3000 tunnels + requests to different amount of them
 
 The load was always the same (sending requests from 600 different threads with interval of 1 sec),
 but due to delays of processing amount of actual req/sec was different (because each thread was waiting for its request).
@@ -142,7 +140,7 @@ Seems like this is because of the multiple network operations that need to be do
 before request comes to the client: router -> redis -> frps -> frpc.
 
 
-#### 10 users
+### 10 users
 
 ```
 single (~6 req/sec):
@@ -152,7 +150,7 @@ multiple (~6 req/sec):
 ```
 
 
-#### 100 users
+### 100 users
 
 ```
 single (~60 req/sec):
@@ -162,7 +160,7 @@ multiple (~60 req/sec):
 ```
 
 
-#### 200 users
+### 200 users
 
 ```
 single (~120 req/sec):
@@ -172,7 +170,7 @@ multiple (~110 req/sec):
 ```
 
 
-#### 300 users
+### 300 users
 
 ```
 single (~180 req/sec):
@@ -182,7 +180,7 @@ multiple (~160 req/sec):
 ```
 
 
-#### 400 users
+### 400 users
 
 ```
 single (~240 req/sec):
@@ -192,7 +190,7 @@ multiple (~220 req/sec):
 ```
 
 
-#### 500 users
+### 500 users
 
 ```
 single (~230 req/sec):
@@ -202,7 +200,7 @@ multiple (~240 req/sec):
 ```
 
 
-#### 600 users
+### 600 users
 
 ```
 single (~260 req/sec):
