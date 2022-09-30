@@ -1,14 +1,15 @@
 batch=500
 tunnels=3000
-users=1000
+users=300
 clusters=0
 duration='1m'
 servers=1
 pool=15
-interval=1
-env="prem20[1]"
+interval=0
+active=3000
+env="prem10"
 
-k6 run tunnels.js --vus $users --batch $batch --duration $duration  > "../reports/ws_${env}_local[$clusters]_${servers}ser[${pool}pool]_${tunnels}tunn_5inst_${users}user_${duration}_${interval}sec.log"
+k6 run tunnels.js --vus $users --batch $batch --duration $duration  > "../reports/ws_${env}[$active]_local[$clusters]_${servers}ser[${pool}pool]_${tunnels}tunn_5inst_${users}user_${duration}_${interval}sec.log"
 
 
 # todo: check this

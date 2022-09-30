@@ -43,7 +43,7 @@ export const options = {
         'thousand-vus': {
             executor: 'constant-vus',
             // vus: VUS,
-            duration: '10m'
+            duration: '1m'
         }
     },
 };
