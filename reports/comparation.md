@@ -73,11 +73,8 @@ Prerequisites:
 
 Though it does not seem to be the cpu bottleneck on the server side (it never grows higher than 3-4%)
 
-
-![img.png](img.png)
-
-
 ##### Note: we expect that the bottleneck was either network on cluster or on local machine (where clients were run)
+
 
 #### 3000 tunnels -- sending requests to all of them
 
@@ -101,6 +98,7 @@ As you can see until the load crosses the threshold of 500 threads the average r
 ~260 req/sec (600 threads, 1s interval):
      http_req_duration..............: avg=494.2ms  min=247.65ms med=402.66ms max=16.2s   p(90)=737.24ms p(95)=981.17ms
 ```
+
 
 #### 3000 tunnels + requests to different amount of them
 
@@ -127,6 +125,7 @@ handle requests the more connections we finally open.
 
 ```
 
+
 ## Single vs Multiple (2) instances
 
 Prerequisites:
@@ -142,6 +141,7 @@ a redis instance adds some latency to the request (sometimes even higher than ex
 Seems like this is because of the multiple network operations that need to be done 
 before request comes to the client: router -> redis -> frps -> frpc.
 
+
 #### 10 users
 
 ```
@@ -150,6 +150,7 @@ single (~6 req/sec):
 multiple (~6 req/sec):
      http_req_duration..............: avg=262.91ms min=243.14ms med=248.17ms max=534.16ms p(90)=281.7ms  p(95)=377.2ms 
 ```
+
 
 #### 100 users
 
@@ -160,6 +161,7 @@ multiple (~60 req/sec):
      http_req_duration..............: avg=285.72ms min=242.84ms med=255.43ms max=717ms    p(90)=393.88ms p(95)=481.21ms
 ```
 
+
 #### 200 users
 
 ```
@@ -168,6 +170,7 @@ single (~120 req/sec):
 multiple (~110 req/sec):
      http_req_duration..............: avg=379.31ms min=243.19ms med=329.65ms max=1.55s    p(90)=540.14ms p(95)=671.85ms
 ```
+
 
 #### 300 users
 
@@ -178,6 +181,7 @@ multiple (~160 req/sec):
      http_req_duration..............: avg=406.69ms min=244.09ms med=345.66ms max=2.06s    p(90)=601.6ms  p(95)=746.86ms
 ```
 
+
 #### 400 users
 
 ```
@@ -187,6 +191,7 @@ multiple (~220 req/sec):
      http_req_duration..............: avg=393.52ms min=243.76ms med=313.24ms max=4.5s     p(90)=596.92ms p(95)=793.91ms
 ```
 
+
 #### 500 users
 
 ```
@@ -195,6 +200,7 @@ single (~230 req/sec):
 multiple (~240 req/sec):
      http_req_duration..............: avg=477.06ms min=244.61ms med=367.04ms max=12.02s p(90)=590.02ms p(95)=782.6ms 
 ```
+
 
 #### 600 users
 
