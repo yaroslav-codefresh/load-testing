@@ -73,7 +73,9 @@ Prerequisites:
 
 Though it does not seem to be the cpu bottleneck on the server side (it never grows higher than 3-4%)
 
+
 ![img.png](img.png)
+
 
 ##### Note: we expect that the bottleneck was either network on cluster or on local machine (where clients were run)
 
