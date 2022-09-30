@@ -12,6 +12,12 @@ increase for about 1% and 50 MB for keeping 3000 tunnels)
 with no additional delay (about 280 ms)
 5) When load grows (about 200 - 500 req/sec) the more tunnels handle requests -> the higher response time
 (though the cpu and memory does not seem to grow)
+6) On such small amount of clients (3000) it does not actually matter to frps whether it's 1500 tunnels or 3000
+what we can see from test with multiple frps instances. This means that for huge amount of connections in prod
+we can start from relatively small amount of servers (5-10) and understand the situation in production usage
+once tunnels amount will grow more than 3000
+7) When using multiple servers mode there is a small latency because of additional layer
+of proxy doing requests to redis
 
 
 ## Ingress vs Ingress-less
@@ -120,47 +126,78 @@ handle requests the more connections we finally open.
 
 ## Single vs Multiple (2) instances
 
-#### 100 users -- 400 tunnels
+Prerequisites:
+1) two frp server instances on gcp cluster (?which resources)
+2) two router instances defining on which frps instance to route request
+3) redis containing the mapping from frpc subdomain to frps instance
+4) 3000 tunnels run on local machine (all connected to server)
+
+Summarizing these results we can see that amount of tunnels connected to one frps replica does not really matter
+when it's in so low number range (1500 or 3000 does not matter). However, having two servers with two routers and 
+a redis instance adds some latency to the request (sometimes even higher than expected).
+
+Seems like this is because of the multiple network operations that need to be done 
+before request comes to the client: router -> redis -> frps -> frpc.
+
+#### 10 users
 
 ```
-single:
-     http_req_duration..............: avg=280.3ms  min=244.82ms med=247.18ms max=907.99ms p(90)=316.65ms p(95)=488.53ms
-multiple:
-     http_req_duration..............: avg=417.67ms min=236.44ms med=255.25ms max=5.54s    p(90)=431.64ms p(95)=477.52ms
+single (~6 req/sec):
+     http_req_duration..............: avg=270.08ms min=237.93ms med=243.7ms  max=481.58ms p(90)=377.68ms p(95)=404.65ms
+multiple (~6 req/sec):
+     http_req_duration..............: avg=262.91ms min=243.14ms med=248.17ms max=534.16ms p(90)=281.7ms  p(95)=377.2ms 
 ```
 
-#### 100 users -- 600 tunnels
+#### 100 users
 
 ```
-single:
-     http_req_duration..............: avg=366.23ms min=244.35ms med=255.19ms max=3.02s   p(90)=828.86ms p(95)=967.18ms
-multiple:
-     http_req_duration..............: avg=900.39ms min=0s       med=259.14ms max=51.2s   p(90)=982.5ms  p(95)=1.39s   
+single (~60 req/sec):
+     http_req_duration..............: avg=285.91ms min=246.79ms med=256.82ms max=737.97ms p(90)=381.46ms p(95)=455.45ms
+multiple (~60 req/sec):
+     http_req_duration..............: avg=285.72ms min=242.84ms med=255.43ms max=717ms    p(90)=393.88ms p(95)=481.21ms
 ```
 
-#### 500 users -- 400 tunnels
+#### 200 users
 
 ```
-single:
-     http_req_duration..............: avg=1.01s    min=0s       med=360.24ms max=20.23s  p(90)=2.06s    p(95)=3.6s    
-multiple:
-     http_req_duration..............: avg=1.08s    min=121.42ms med=331.67ms max=51.52s  p(90)=1.3s     p(95)=10.15s  
+single (~120 req/sec):
+     http_req_duration..............: avg=320.45ms min=246.3ms  med=273.83ms max=756.44ms p(90)=466.24ms p(95)=509.54ms
+multiple (~110 req/sec):
+     http_req_duration..............: avg=379.31ms min=243.19ms med=329.65ms max=1.55s    p(90)=540.14ms p(95)=671.85ms
 ```
 
-#### 500 users -- 600 tunnels
+#### 300 users
 
 ```
-single:
-     http_req_duration..............: avg=1.98s    min=0s       med=1.69s    max=11.5s   p(90)=4.39s    p(95)=5.17s   
-multiple:
-     http_req_duration..............: avg=1.89s    min=0s       med=1.25s    max=36.93s  p(90)=4.4s     p(95)=5.78s   
+single (~180 req/sec):
+     http_req_duration..............: avg=318.07ms min=247.15ms med=271.37ms max=1.14s   p(90)=456.77ms p(95)=547.66ms
+multiple (~160 req/sec):
+     http_req_duration..............: avg=406.69ms min=244.09ms med=345.66ms max=2.06s    p(90)=601.6ms  p(95)=746.86ms
 ```
 
-#### 1000 users -- 600 tunnels
+#### 400 users
 
 ```
-single:
-     http_req_duration..............: avg=3.88s    min=0s       med=3.03s    max=45.97s  p(90)=7.33s    p(95)=9.78s   
-multiple:
-     http_req_duration..............: avg=5.03s    min=0s       med=4.2s     max=51.53s  p(90)=10.03s   p(95)=13.46s  
+single (~240 req/sec):
+     http_req_duration..............: avg=337.98ms min=247.04ms med=290.56ms max=1.73s    p(90)=452.71ms p(95)=587.6ms 
+multiple (~220 req/sec):
+     http_req_duration..............: avg=393.52ms min=243.76ms med=313.24ms max=4.5s     p(90)=596.92ms p(95)=793.91ms
+```
+
+#### 500 users
+
+```
+single (~230 req/sec):
+     http_req_duration..............: avg=384.27ms min=247.95ms med=306.41ms max=14.95s   p(90)=558.76ms p(95)=740.68ms
+multiple (~240 req/sec):
+     http_req_duration..............: avg=477.06ms min=244.61ms med=367.04ms max=12.02s p(90)=590.02ms p(95)=782.6ms 
+```
+
+#### 600 users
+
+```
+single (~260 req/sec):
+     http_req_duration..............: avg=494.2ms  min=247.65ms med=402.66ms max=16.2s   p(90)=737.24ms p(95)=981.17ms
+multiple (~250 req/sec):
+     http_req_duration..............: avg=532.43ms min=245.69ms med=424.66ms max=12.83s   p(90)=823.59ms p(95)=1.27s   
 ```

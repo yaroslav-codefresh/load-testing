@@ -1,15 +1,33 @@
 batch=500
 tunnels=3000
-users=300
 clusters=0
 duration='1m'
-servers=1
+servers=2
 pool=15
-interval=0
+interval=1
 active=3000
-env="prem10"
+env="prem20"
 
+#users=10
+#k6 run tunnels.js --vus $users --batch $batch --duration $duration  > "../reports/ws_${env}[$active]_local[$clusters]_${servers}ser[${pool}pool]_${tunnels}tunn_5inst_${users}user_${duration}_${interval}sec.log"
+#
+#users=100
+#k6 run tunnels.js --vus $users --batch $batch --duration $duration  > "../reports/ws_${env}[$active]_local[$clusters]_${servers}ser[${pool}pool]_${tunnels}tunn_5inst_${users}user_${duration}_${interval}sec.log"
+#
+#users=200
+#k6 run tunnels.js --vus $users --batch $batch --duration $duration  > "../reports/ws_${env}[$active]_local[$clusters]_${servers}ser[${pool}pool]_${tunnels}tunn_5inst_${users}user_${duration}_${interval}sec.log"
+#
+#users=300
+#k6 run tunnels.js --vus $users --batch $batch --duration $duration  > "../reports/ws_${env}[$active]_local[$clusters]_${servers}ser[${pool}pool]_${tunnels}tunn_5inst_${users}user_${duration}_${interval}sec.log"
+#
+#users=400
+#k6 run tunnels.js --vus $users --batch $batch --duration $duration  > "../reports/ws_${env}[$active]_local[$clusters]_${servers}ser[${pool}pool]_${tunnels}tunn_5inst_${users}user_${duration}_${interval}sec.log"
+#
+users=500
 k6 run tunnels.js --vus $users --batch $batch --duration $duration  > "../reports/ws_${env}[$active]_local[$clusters]_${servers}ser[${pool}pool]_${tunnels}tunn_5inst_${users}user_${duration}_${interval}sec.log"
+
+#users=600
+#k6 run tunnels.js --vus $users --batch $batch --duration $duration  > "../reports/ws_${env}[$active]_local[$clusters]_${servers}ser[${pool}pool]_${tunnels}tunn_5inst_${users}user_${duration}_${interval}sec.log"
 
 
 # todo: check this
